@@ -7,7 +7,8 @@ sealed class NavRoutes(val route: String) {
         fun withArgs(countryCode: String): String = "states/$countryCode"
     }
 
-    object CityList : NavRoutes("cities/{countryCode}/{stateCode}") {
+
+    object CityList : NavRoutes("cities/{country}/{state}") {
         fun withArgs(countryCode: String, stateCode: String): String =
             "cities/$countryCode/$stateCode"
     }

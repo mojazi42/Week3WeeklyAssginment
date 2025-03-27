@@ -1,12 +1,13 @@
 package com.example.countrycityexplorer.data.api
 
 import com.example.countrycityexplorer.data.model.ApiResponse
+import com.example.countrycityexplorer.domain.model.StatesWrapper
 import com.example.countrycityexplorer.domain.model.City
-import com.example.countrycityexplorer.domain.model.Country
 import com.example.countrycityexplorer.domain.model.CountryItem
-import com.example.countrycityexplorer.domain.model.State
+import com.google.gson.annotations.SerializedName
+import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.POST
 
 
 interface CountryApiService {
@@ -16,14 +17,18 @@ interface CountryApiService {
 
 
 
-    @GET("countries/{country_code}/states")
-    suspend fun getStates(
-        @Path("country_code") countryCode: String
-    ):  ApiResponse<List<State>>
+    @POST("countries/states")
+    suspend fun getStates(@Body request: StateRequest):  ApiResponse<StatesWrapper>
 
-    @GET("countries/{country_code}/states/{state_code}/cities")
-    suspend fun getCities(
-        @Path("country_code") countryCode: String,
-        @Path("state_code") stateCode: String
-    ): ApiResponse<List<City>>
+    @POST("countries/states/cities")
+    suspend fun getCities(@Body request: CityRequest): ApiResponse<List<City>>
 }
+data class StateRequest(
+    @SerializedName("country") val country: String
+)
+data class CityRequest(
+    val country: String,
+    val state: String
+)
+
+

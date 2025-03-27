@@ -7,7 +7,7 @@ import com.example.countrycityexplorer.presentation.ui.state.CountryUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import android.util.Log // ✅ for logging
+import android.util.Log
 
 class CountryViewModel(
     private val getCountriesUseCase: GetCountriesUseCase

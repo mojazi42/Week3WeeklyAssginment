@@ -18,15 +18,11 @@ class CityViewModel(
     fun getCities(countryCode: String, stateCode: String) {
         viewModelScope.launch {
             _uiState.value = CityUiState.Loading
-            try {
-                val result = getCitiesUseCase(countryCode, stateCode)
-                result.onSuccess { cities ->
-                    _uiState.value = CityUiState.Success(cities)
-                }.onFailure { throwable ->
-                    _uiState.value = CityUiState.Error(throwable.message ?: "Unknown Error")
-                }
-            } catch (e: Exception) {
-                _uiState.value = CityUiState.Error(e.message ?: "Unexpected Error")
+            val result = getCitiesUseCase(countryCode, stateCode)
+            result.onSuccess {
+                _uiState.value = CityUiState.Success(it)
+            }.onFailure {
+                _uiState.value = CityUiState.Error(it.message ?: "Unknown Error")
             }
         }
     }

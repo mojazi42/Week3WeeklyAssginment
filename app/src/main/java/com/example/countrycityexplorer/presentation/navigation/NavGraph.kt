@@ -7,8 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.countrycityexplorer.data.api.CountryApiService
 import com.example.countrycityexplorer.data.repositoryImpls.CountryRepositoryImpl
+import com.example.countrycityexplorer.domain.usecase.GetCitiesUseCase
 import com.example.countrycityexplorer.domain.usecase.GetCountriesUseCase
 import com.example.countrycityexplorer.domain.usecase.GetStatesUseCase
+import com.example.countrycityexplorer.presentation.ui.screens.CityListScreen
 import com.example.countrycityexplorer.presentation.ui.screens.CountryListScreen
 import com.example.countrycityexplorer.presentation.ui.screens.StateListScreen
 import com.example.countrycityexplorer.presentation.viewmodel.*
@@ -22,7 +24,7 @@ fun NavGraph(
     themeViewModel: ThemeViewModel
 ) {
     val api = Retrofit.Builder()
-        .baseUrl("https://countriesnow.space/api/v0.1/")
+        .baseUrl("https://countriesnow.space/api/v0.1/") // double-check this URL
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(CountryApiService::class.java)
@@ -31,7 +33,6 @@ fun NavGraph(
         navController = navController,
         startDestination = NavRoutes.CountryList.route
     ) {
-
         composable(NavRoutes.CountryList.route) {
             val repo = CountryRepositoryImpl(api)
             val useCase = GetCountriesUseCase(repo)
@@ -59,12 +60,25 @@ fun NavGraph(
                 viewModel = stateViewModel
             )
         }
-
         composable(NavRoutes.CityList.route) { backStackEntry ->
             val countryCode = backStackEntry.arguments?.getString("countryCode") ?: ""
             val stateCode = backStackEntry.arguments?.getString("stateCode") ?: ""
 
-            // Add CityViewModel and screen if needed
+            val repo = CountryRepositoryImpl(api)
+            val useCase = GetCitiesUseCase(repo)
+            val factory = CityViewModelFactory(useCase)
+            val viewModel: CityViewModel = viewModel(factory = factory)
+
+            CityListScreen(
+                navController = navController,
+                countryCode = countryCode,
+                stateCode = stateCode,
+                viewModel = viewModel
+            )
         }
+
+
+
+
     }
 }

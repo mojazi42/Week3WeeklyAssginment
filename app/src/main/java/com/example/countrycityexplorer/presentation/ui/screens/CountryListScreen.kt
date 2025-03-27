@@ -63,9 +63,10 @@ fun CountryListScreen(
                                 countryItem = countryItem,
                                 onClick = {
                                     navController.navigate(
-                                        NavRoutes.StateList.withArgs(countryItem.iso2)
+                                        NavRoutes.StateList.withArgs(countryItem.country)
                                     )
                                 }
+
                             )
                         }
                     }

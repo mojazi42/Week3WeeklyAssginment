@@ -41,18 +41,26 @@ fun CityListScreen(
 
             is CityUiState.Success -> {
                 val cities = (uiState as CityUiState.Success).cities
-                LazyColumn(modifier = Modifier.padding(8.dp)) {
-                    items(cities) { city ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp)
-                        ) {
-                            Text(
-                                text = city.name,
-                                modifier = Modifier.padding(16.dp),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
+
+                if (cities.isEmpty()) {
+                    Text(
+                        text = "No cities found.",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                } else {
+                    LazyColumn(modifier = Modifier.padding(8.dp)) {
+                        items(cities) { city ->
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp)
+                            ) {
+                                Text(
+                                    text = city.name,
+                                    modifier = Modifier.padding(16.dp),
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
                         }
                     }
                 }

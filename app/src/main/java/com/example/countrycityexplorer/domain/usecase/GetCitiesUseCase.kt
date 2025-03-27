@@ -10,3 +10,4 @@ class GetCitiesUseCase(
         return repository.getCities(countryCode, stateCode)
     }
 }
+
